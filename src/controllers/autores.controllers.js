@@ -1,4 +1,6 @@
 const AutorModel = require('../models/autor.model');
+const PostModel = require('../models/post.model');
+
 
 const getAllAutores = async (req, res) => {
     try {
@@ -11,11 +13,29 @@ const getAllAutores = async (req, res) => {
 }
 
 const getAutorById = async (req, res) => {
-    //esta no se si me hace falta 
     try {
         const { autorId } = req.params;
         const [autor] = await AutorModel.selectAutorById(autorId);
         res.json(autor[0]);
+    } catch (error) {
+        res.json({ fatal: error.message });
+    }
+
+}
+
+const getPostsAutorById = async (req, res) => {
+    // /api/autores/posts?autorId=5
+    try {
+
+        const { autorId } = req.query;
+        const [autor] = await AutorModel.selectAutorById(autorId);
+        const [posts] = await PostModel.selectPostByAutorId(autorId);
+
+
+        let autorPost = autor[0];
+        autorPost.posts = posts;
+
+        res.json(autorPost);
     } catch (error) {
         res.json({ fatal: error.message });
     }
@@ -57,5 +77,5 @@ const deleteAutor = async (req, res) => {
 }
 
 module.exports = {
-    getAllAutores, createAutor, updateAutor, deleteAutor, getAutorById
+    getAllAutores, getAutorById, getPostsAutorById, createAutor, updateAutor, deleteAutor
 };

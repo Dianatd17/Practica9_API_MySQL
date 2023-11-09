@@ -7,6 +7,10 @@ const selectPostById = (postId) => {
 }
 
 
+const selectPostByAutorId = (autorId) => {
+    return db.query('select * from posts where autores_id = ?', [autorId]);
+}
+
 const insertPost = ({ titulo, descripcion, fecha_creacion, categoria, autores_id }) => {
     //entiendo que el Id del autor se ha obtenido en la parte del front y se envia los datos compeltos al Back
     return db.query('insert into posts(titulo,descripcion,fecha_creacion,categoria,autores_id) value(?,?,?,?,?)',
@@ -14,4 +18,4 @@ const insertPost = ({ titulo, descripcion, fecha_creacion, categoria, autores_id
 }
 
 
-module.exports = { selectAllPosts, selectPostById, insertPost };
+module.exports = { selectAllPosts, selectPostById, selectPostByAutorId, insertPost };

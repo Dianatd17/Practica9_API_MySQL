@@ -21,6 +21,8 @@ const getPostById = async (req, res) => {
 
 }
 
+//const products = await productModel.find().populate('creator');
+
 
 const createPost = async (req, res) => {
     try {
