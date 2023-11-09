@@ -1,9 +1,15 @@
 const PostModel = require('../models/post.model');
+const AutorModel = require('../models/autor.model');
 
 const getAllPosts = async (req, res) => {
     try {
-        const [result] = await PostModel.selectAllPosts();
-        res.json(result);
+        const [posts] = await PostModel.selectAllPosts();
+
+        for (let post of posts) {
+            const [autor] = await AutorModel.selectAutorById(post.autores_id);
+            post.autor = autor;
+        }
+        res.json(posts);
     } catch (error) {
         res.json({ fatal: error.message });
     }
