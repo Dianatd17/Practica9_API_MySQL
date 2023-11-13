@@ -1,5 +1,6 @@
 const PostModel = require('../models/post.model');
 const AutorModel = require('../models/autor.model');
+const postValidation = require('../validations/post.validation')
 
 const getAllPosts = async (req, res) => {
     try {
@@ -27,11 +28,10 @@ const getPostById = async (req, res) => {
 
 }
 
-//const products = await productModel.find().populate('creator');
-
 
 const createPost = async (req, res) => {
     try {
+        postValidation.PostValidationData(req.body);
 
         const [result] = await PostModel.insertPost(req.body);
         const [post] = await PostModel.selectPostById(result.insertId);
@@ -42,8 +42,31 @@ const createPost = async (req, res) => {
 
 }
 
+const updatePost = async (req, res) => {
+    try {
+        postValidation.PostValidationData(req.body);
+
+        const { postId } = req.params;
+        const [result] = await PostModel.updatePostById(postId, req.body);
+        res.json({ succes: 'actualización correcta' });
+    } catch (error) {
+        res.json({ fatal: error.message });
+    }
+
+}
+
+const deletePost = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const [result] = await PostModel.deletePostbyId(postId);
+        res.json({ succes: 'post eliminado' });
+    } catch (error) {
+        res.json({ fatal: error.message });
+    }
+}
+
 
 
 module.exports = {
-    getAllPosts, getPostById, createPost
+    getAllPosts, getPostById, createPost, updatePost, deletePost
 };

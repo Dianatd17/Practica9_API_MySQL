@@ -1,6 +1,7 @@
 const AutorModel = require('../models/autor.model');
 const PostModel = require('../models/post.model');
 
+const autorValidation = require('../validations/autor.validation')
 
 const getAllAutores = async (req, res) => {
     try {
@@ -45,6 +46,9 @@ const getPostsAutorById = async (req, res) => {
 
 const createAutor = async (req, res) => {
     try {
+
+        autorValidation.autorValidation(req.body);
+
         const [result] = await AutorModel.insertAutor(req.body);
         const [autor] = await AutorModel.selectAutorById(result.insertId);
         res.json(autor[0]);
@@ -56,6 +60,9 @@ const createAutor = async (req, res) => {
 
 const updateAutor = async (req, res) => {
     try {
+        autorValidation.autorValidation(req.body);
+
+
         const { autorId } = req.params;
         const [result] = await AutorModel.updateAutorById(autorId, req.body);
         res.json({ succes: 'actualización correcta' });
@@ -69,7 +76,8 @@ const updateAutor = async (req, res) => {
 const deleteAutor = async (req, res) => {
     try {
         const { autorId } = req.params;
-        const [result] = await AutorModel.deleteAutorById(autorId);
+        const [result] = await PostModel.deletePostByAutorId(autorId);
+        const [resul] = await AutorModel.deleteAutorById(autorId);
         res.json({ succes: 'autor eliminado' });
     } catch (error) {
         res.json({ fatal: error.message });

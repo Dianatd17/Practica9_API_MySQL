@@ -20,7 +20,6 @@ const updateAutorById = (autorId, { nombre, email, imagen }) => {
 }
 
 const deleteAutorById = (autorId) => {
-    //habria que eliminar los posts del autor que se está indicando
     return db.query('delete from autores  where id = ?', autorId
     );
 

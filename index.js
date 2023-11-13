@@ -18,7 +18,7 @@ const PORT = process.env.PORT ?? 3000;
 server.listen(PORT);
 
 
-//Para capturar el evento del listeneer y del error
+//Capturar el evento del listener y del error
 server.on('listening', () => {
     console.log(`servidor escuchando en el puerto ${PORT}`)
 })
